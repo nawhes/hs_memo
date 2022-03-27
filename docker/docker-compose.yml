@@ -1,0 +1,9 @@
+version: '3.9'
+services:
+  db:
+    image: nawhes/hs_memo:0.1.1
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      - POSTGRES_PASSWORD=${DB_PW}
+      - PGPASSWORD=${DB_PW}

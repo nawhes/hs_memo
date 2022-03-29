@@ -1,12 +1,15 @@
-import { Table, Column, Model, PrimaryKey, HasMany, Is, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, HasMany, Is, DataType, AutoIncrement, Sequelize } from 'sequelize-typescript';
+
+import Container from 'typedi';
 import BaseModel from './BaseModel';
 import Memo from './Memo.model';
 
 const VALID_ID = /./;
 
-@Table({ tableName: 'account', underscored: true })
-export default class Account extends BaseModel {
+@Table({ tableName: 'account', underscored: true, timestamps: false })
+export default class Account extends BaseModel<Account> {
 	@PrimaryKey
+	@AutoIncrement
 	@Column
 	id: number;
 

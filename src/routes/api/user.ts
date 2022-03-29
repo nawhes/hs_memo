@@ -8,12 +8,12 @@ const accountService = Container.get(AccountService);
 
 //todo
 router.post('/api/user/signup', async (ctx) => {
-	await accountService.signIn();
+	// await accountService.signUp();
 });
 
 //todo
 router.post('/api/user/signin', async (ctx) => {
-	await accountService.signUp();
+	// await accountService.signIn();
 });
 
 export default router;

@@ -1,10 +1,14 @@
-import { Table, Column, Model, PrimaryKey, ForeignKey, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, ForeignKey, DataType, AutoIncrement } from 'sequelize-typescript';
+import { Service } from 'typedi';
 import Account from './Account.model';
+import BaseModel from './BaseModel';
 import Memo from './Memo.model';
 
+@Service()
 @Table({ tableName: 'comment', underscored: true })
-export default class Comment extends Model {
+export default class Comment extends BaseModel<Comment> {
 	@PrimaryKey
+	@AutoIncrement
 	@Column
 	id: number;
 

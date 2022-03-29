@@ -6,10 +6,6 @@ import Container from 'typedi';
 const router = new Router();
 const memoService = Container.get(MemoService);
 
-router.get('/test', (ctx) => {
-	logger.info('HIHI');
-});
-
 //todo
 router.get('/api/memo', async (ctx) => {
 	await memoService.getList();

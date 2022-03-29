@@ -3,12 +3,12 @@ import { DB } from '../config/index';
 import path from 'path';
 import logger from './logger';
 import Container from 'typedi';
+import Account from 'models/Account.model';
 
 const modelsDirectory = path.resolve(process.cwd(), 'src', 'models');
 
 const sequelize = new Sequelize(`postgres://${DB.USER}:${DB.PW}@${DB.HOST}:${DB.PORT}/${DB.NAME}`, {
 	models: [modelsDirectory + '/**/*.model.ts'],
-	repositoryMode: true,
 });
 
 sequelize
@@ -21,4 +21,4 @@ sequelize
 		throw error;
 	});
 
-Container.set('ORM', sequelize);
+Container.set(Sequelize, sequelize);

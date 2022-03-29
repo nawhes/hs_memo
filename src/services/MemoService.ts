@@ -1,39 +1,47 @@
-import MemoRepository from 'repositories/MemoRepository';
+import Memo from 'models/Memo.model';
 import { Service } from 'typedi';
 
 @Service()
 export default class MemoService {
-	constructor(private memoRepository: MemoRepository) {}
+	constructor(private memo: Memo) {}
 
 	//todo
-	public async getList();
-	public async getList(page: number);
 	public async getList(page?: number) {
-		let result;
-		if (page) {
-			result = await this.memoRepository.test();
-		} else {
-			result = await this.memoRepository.test();
-		}
+		try {
+			let result;
+			if (page) {
+				result = Memo.findAll();
+			} else {
+				result = Memo.findAll();
+			}
+		} catch (error) {}
 	}
 
 	//todo
 	public async insert() {
-		// await this.memoRepository.insert()
+		try {
+			Memo.create();
+		} catch (error) {}
 	}
 
 	//todo
 	public async getDetail(id: number) {
-		const result = await this.memoRepository.findById(id);
+		try {
+			const result = Memo.findOne();
+		} catch (error) {}
 	}
 
 	//todo
 	public async updateBody(id: number, body: string) {
-		await this.memoRepository.update();
+		try {
+			// const result = Memo.update();
+		} catch (error) {}
 	}
 
 	//todo
 	public async delete(id: number) {
-		await this.memoRepository.delete(id);
+		try {
+			// const result = Memo.delete();
+		} catch (error) {}
 	}
 }

@@ -29,6 +29,6 @@ export default class Account extends BaseModel<Account> {
 	@Column(DataType.DATE)
 	createdAt?: any;
 
-	@HasMany(() => Memo, 'accountId')
+	@HasMany(() => Memo, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
 	memos: Memo[];
 }

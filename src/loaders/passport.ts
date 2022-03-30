@@ -7,8 +7,8 @@ export default () => {
 	koaPassport.serializeUser((user, done) => {
 		done(null, user['id']);
 	});
-	koaPassport.deserializeUser((userid: any, done) => {
-		done(null, userid);
+	koaPassport.deserializeUser((user: any, done) => {
+		done(null, user);
 	});
 
 	koaPassport.use(

@@ -29,6 +29,7 @@ export default async function koaLogger(ctx, next) {
 		res.once('close', onclose);
 	} catch (error) {
 		log(ctx, start, null, error, null);
+		throw error;
 	}
 }
 

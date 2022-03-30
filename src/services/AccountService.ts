@@ -1,20 +1,34 @@
-import { DataAccessError } from 'errors/DataAccessError';
 import Account from 'models/Account.model';
 import { Service } from 'typedi';
+import { AUTH } from 'config';
+import crypto from 'crypto';
+import ValidationError from 'errors/ValidationError';
 
 @Service()
 export default class AccountService {
-	//todo
-	public async signUp(id: string, pw: string): Promise<Account> {
-		const result = await Account.create({ userid: id, saltedPw: pw });
-		if (result) return result;
-		throw new Error();
+	private hashing(pw, salt) {
+		return crypto.pbkdf2Sync(pw, salt, 10000, 32, 'sha256').toString('hex');
 	}
 
-	//todo
+	public async signUp(id: string, pw: string): Promise<void> {
+		try {
+			const isExist = await Account.findOne({ where: { userid: id } });
+			if (isExist) throw new ValidationError(`${id} is exist already`);
+			const salt = crypto.randomBytes(AUTH.SALT_LENGTH_BYTE).toString('hex');
+			const saltedPw = this.hashing(pw, salt);
+			await Account.create({ userid: id, saltedPw, salt });
+		} catch (error: unknown) {
+			if (typeof error == 'string' || !(error instanceof Error)) throw error;
+			if (error.name === 'SequelizeValidationError') throw new ValidationError(error.message);
+			throw error;
+		}
+	}
+
 	public async signIn(id: string, pw: string): Promise<Account> {
-		const result = await Account.findOne({ where: { userid: id, saltedPw: pw } });
-		if (result) return result;
-		throw new Error();
+		const account = await Account.findOne({ where: { userid: id } });
+		if (account === null) throw new ValidationError(`${id} is not exist`);
+		const saltedPw = this.hashing(pw, account.salt);
+		if (saltedPw !== account.saltedPw) throw new ValidationError('Not valid password');
+		return account;
 	}
 }

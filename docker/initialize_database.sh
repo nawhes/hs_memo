@@ -18,7 +18,8 @@ PGPASSWORD=memo psql -v ON_ERROR_STOP=1 --username "$HS_DBUSER" --dbname $HS_DBN
 CREATE TABLE IF NOT EXISTS account (
     id              SERIAL PRIMARY KEY,
     userid          VARCHAR(20) UNIQUE NOT NULL,
-    salted_pw       CHAR(256) NOT NULL,
+    salted_pw       CHAR(64) NOT NULL,
+    salt            CHAR(16) NOT NULL,
     created_at      TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
@@ -38,6 +39,13 @@ CREATE TABLE IF NOT EXISTS comment (
     body            TEXT NOT NULL,
     created_at      TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at      TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS session (
+    id              VARCHAR PRIMARY KEY,
+    max_age         BIGINT,
+    userid          INTEGER,
+    session         JSONB
 );
 
 CREATE OR REPLACE FUNCTION FNC_update_time() 

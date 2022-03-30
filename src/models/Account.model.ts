@@ -1,10 +1,11 @@
-import { Table, Column, Model, PrimaryKey, HasMany, Is, DataType, AutoIncrement, Sequelize } from 'sequelize-typescript';
-
-import Container from 'typedi';
+import { AUTH } from 'config';
+import { Table, Column, PrimaryKey, HasMany, Is, DataType, AutoIncrement } from 'sequelize-typescript';
 import BaseModel from './BaseModel';
 import Memo from './Memo.model';
 
-const VALID_ID = /./;
+const VALID_ID = /^[a-z]{1}[a-z0-9_-]{4,20}$/;
+const VALID_SALTEDPW = /[a-f0-9]{64}/;
+const VALID_SALT = new RegExp(`[a-f0-9]{${AUTH.SALT_LENGTH_BYTE * 2}}`);
 
 @Table({ tableName: 'account', underscored: true, timestamps: false })
 export default class Account extends BaseModel<Account> {
@@ -13,16 +14,17 @@ export default class Account extends BaseModel<Account> {
 	@Column
 	id: number;
 
-	@Is('ID', (value) => {
-		if (!VALID_ID.test(value)) {
-			throw new Error(`"${value}" is invalid for user id.`);
-		}
-	})
-	@Column(DataType.STRING(20))
+	@Is(VALID_ID)
+	@Column({ type: DataType.STRING(20), allowNull: false })
 	userid: string;
 
-	@Column(DataType.STRING(256))
+	@Is(VALID_SALTEDPW)
+	@Column({ type: DataType.STRING(256), allowNull: false })
 	saltedPw: string;
+
+	@Is(VALID_SALT)
+	@Column({ type: DataType.STRING(AUTH.SALT_LENGTH_BYTE * 2), allowNull: false })
+	salt: string;
 
 	@Column(DataType.DATE)
 	createdAt?: any;

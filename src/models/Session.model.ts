@@ -12,7 +12,4 @@ export default class Session extends BaseModel<Session> {
 
 	@Column({ type: DataType.NUMBER, allowNull: false })
 	maxAge: number;
-
-	@Column({ type: DataType.NUMBER, allowNull: false })
-	userid: number;
 }

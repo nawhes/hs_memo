@@ -8,7 +8,7 @@ export default class PostgresSessionStore {
 
 	public async set(key, session, maxAge, { rolling, changed }) {
 		if (changed || rolling) {
-			await Session.upsert({ id: key, userid: -1, session, maxAge });
+			await Session.upsert({ id: key, session, maxAge });
 		}
 	}
 

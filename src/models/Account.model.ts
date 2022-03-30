@@ -16,7 +16,7 @@ export default class Account extends BaseModel<Account> {
 
 	@Is(VALID_ID)
 	@Column({ type: DataType.STRING(20), allowNull: false })
-	userid: string;
+	accountId: string;
 
 	@Is(VALID_SALTEDPW)
 	@Column({ type: DataType.STRING(256), allowNull: false })
@@ -29,6 +29,6 @@ export default class Account extends BaseModel<Account> {
 	@Column(DataType.DATE)
 	createdAt?: any;
 
-	@HasMany(() => Memo, 'userid')
+	@HasMany(() => Memo, 'accountId')
 	memos: Memo[];
 }

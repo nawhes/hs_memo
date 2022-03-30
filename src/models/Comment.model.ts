@@ -1,10 +1,8 @@
-import { Table, Column, Model, PrimaryKey, ForeignKey, DataType, AutoIncrement } from 'sequelize-typescript';
-import { Service } from 'typedi';
+import { Table, Column, PrimaryKey, ForeignKey, DataType, AutoIncrement } from 'sequelize-typescript';
 import Account from './Account.model';
 import BaseModel from './BaseModel';
 import Memo from './Memo.model';
 
-@Service()
 @Table({ tableName: 'comment', underscored: true })
 export default class Comment extends BaseModel<Comment> {
 	@PrimaryKey
@@ -13,14 +11,14 @@ export default class Comment extends BaseModel<Comment> {
 	id: number;
 
 	@ForeignKey(() => Account)
-	@Column
-	userid: number;
+	@Column({ type: DataType.INTEGER, allowNull: false })
+	accountId: number;
 
 	@ForeignKey(() => Memo)
-	@Column
-	memoid: number;
+	@Column({ type: DataType.INTEGER, allowNull: false })
+	memoId: number;
 
-	@Column(DataType.TEXT)
+	@Column({ type: DataType.TEXT, allowNull: false })
 	body: string;
 
 	@Column(DataType.DATE)

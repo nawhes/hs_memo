@@ -1,47 +1,47 @@
+import { DataAccessError } from 'errors/DataAccessError';
 import Memo from 'models/Memo.model';
 import { Service } from 'typedi';
 
 @Service()
 export default class MemoService {
-	constructor(private memo: Memo) {}
+	private readonly limit = 30;
+	constructor() {}
 
-	//todo
-	public async getList(page?: number) {
-		try {
-			let result;
-			if (page) {
-				result = Memo.findAll();
-			} else {
-				result = Memo.findAll();
-			}
-		} catch (error) {}
+	public async getList(page: number = 1): Promise<Memo[]> {
+		const offset = (page - 1) * this.limit;
+		return Memo.findAll({ offset, limit: this.limit });
 	}
 
-	//todo
-	public async insert() {
+	public async insert(userid: number, body: string): Promise<Memo> {
 		try {
-			Memo.create();
-		} catch (error) {}
+			const head = body.substring(0, 20);
+			const result = await Memo.create({ userid, head, body }, { raw: true });
+			if (!result) throw new DataAccessError('Memo does not saved');
+			return result;
+		} catch (error) {
+			if (typeof error == 'string' || !(error instanceof Error)) throw error;
+			if (error.name === 'ForeignKeyConstraintError') throw new DataAccessError(`${userid} has some problem`);
+			throw error;
+		}
 	}
 
-	//todo
-	public async getDetail(id: number) {
-		try {
-			const result = Memo.findOne();
-		} catch (error) {}
+	public async getDetail(id: number): Promise<Memo> {
+		const result = await Memo.findOne({ where: { id }, raw: true });
+		if (!result) throw new DataAccessError('Memo does not exist');
+		return result;
+		//todo fetch comments
 	}
 
-	//todo
-	public async updateBody(id: number, body: string) {
-		try {
-			// const result = Memo.update();
-		} catch (error) {}
+	public async updateBody(id: number, body: string): Promise<Memo> {
+		const head = body.substring(0, 20);
+		const [affectedCount, affectedRow] = await Memo.update({ head, body }, { where: { id }, returning: true });
+		if (affectedCount === 0) throw new DataAccessError('Memo does not exist');
+		return affectedRow[0];
 	}
 
-	//todo
-	public async delete(id: number) {
-		try {
-			// const result = Memo.delete();
-		} catch (error) {}
+	public async delete(id: number): Promise<void> {
+		const result = await Memo.destroy({ where: { id } });
+		if (result === 0) throw new DataAccessError('Memo does not exist');
+		//todo remove with comments
 	}
 }

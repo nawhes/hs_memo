@@ -1,4 +1,5 @@
 import DataAccessError from 'errors/DataAccessError';
+import Comment from 'models/Comment.model';
 import Memo from 'models/Memo.model';
 import { Service } from 'typedi';
 
@@ -20,16 +21,15 @@ export default class MemoService {
 			return result;
 		} catch (error) {
 			if (typeof error == 'string' || !(error instanceof Error)) throw error;
-			if (error.name === 'ForeignKeyConstraintError') throw new DataAccessError(`${accountId} has some problem`);
+			if (error.name === 'SequelizeForeignKeyConstraintError') throw new DataAccessError(`${accountId} has some problem`);
 			throw error;
 		}
 	}
 
 	public async getDetail(id: number): Promise<Memo> {
-		const result = await Memo.findOne({ where: { id }, raw: true });
+		const result = await Memo.findOne({ where: { id }, include: [Comment] });
 		if (!result) throw new DataAccessError('Memo does not exist');
 		return result;
-		//todo fetch comments
 	}
 
 	public async updateBody(id: number, accountId: number, body: string): Promise<Memo> {
@@ -42,6 +42,5 @@ export default class MemoService {
 	public async delete(id: number, accountId: number): Promise<void> {
 		const result = await Memo.destroy({ where: { id, accountId } });
 		if (result === 0) throw new DataAccessError('Memo does not exist');
-		//todo remove with comments
 	}
 }

@@ -1,30 +1,49 @@
 import Router from '@koa/router';
-import logger from 'loaders/logger';
 import MemoService from 'services/MemoService';
 import Container from 'typedi';
+import convertParamQuery from 'middleware/convertParamQuery';
+import validateUser from 'middleware/validateUser';
 
 const router = new Router();
 const memoService = Container.get(MemoService);
 
-//todo
-router.get('/api/memo', async (ctx) => {
-	await memoService.getList();
+router.get('/api/memo', convertParamQuery, async (ctx) => {
+	const page = ctx.request.query.page;
+
+	const result = await memoService.getList(page);
+	ctx.status = 200;
+	ctx.body = { result };
 });
 
-//todo
-router.post('/api/memo', async (ctx) => {
-	await memoService.insert();
+router.post('/api/memo', validateUser, async (ctx) => {
+	const accountId = ctx.state.user;
+	const { body } = ctx.request.body;
+	const result = await memoService.insert(accountId, body);
+	ctx.status = 200;
+	ctx.body = { result };
 });
 
-//todo
-router.get('/api/memo/:memoId', async (ctx) => {
-	await memoService.getDetail(1);
+router.get('/api/memo/:memoId', convertParamQuery, async (ctx) => {
+	const { memoId } = ctx.param;
+	const result = await memoService.getDetail(memoId);
+	ctx.status = 200;
+	ctx.body = { result };
 });
 
-//todo
-router.put('/api/memo/:memoId', async (ctx) => {});
+router.put('/api/memo/:memoId', validateUser, convertParamQuery, async (ctx) => {
+	const accountId = ctx.state.user;
+	const { body } = ctx.request.body;
+	const { memoId } = ctx.param;
+	const result = await memoService.updateBody(memoId, accountId, body);
+	ctx.status = 200;
+	ctx.body = { result };
+});
 
-//todo
-router.delete('/api/memo/:memoId', async (ctx) => {});
+router.delete('/api/memo/:memoId', validateUser, convertParamQuery, async (ctx) => {
+	const accountId = ctx.state.user;
+	const { memoId } = ctx.param;
+	await memoService.delete(memoId, accountId);
+	ctx.status = 204;
+});
 
 export default router;

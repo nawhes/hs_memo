@@ -24,7 +24,7 @@ router.post('/api/memo', validateUser, async (ctx) => {
 });
 
 router.get('/api/memo/:memoId', convertParamQuery, async (ctx) => {
-	const { memoId } = ctx.param;
+	const { memoId } = ctx.request.params;
 	const result = await memoService.getDetail(memoId);
 	ctx.status = 200;
 	ctx.body = { result };
@@ -33,7 +33,7 @@ router.get('/api/memo/:memoId', convertParamQuery, async (ctx) => {
 router.put('/api/memo/:memoId', validateUser, convertParamQuery, async (ctx) => {
 	const accountId = ctx.state.user;
 	const { body } = ctx.request.body;
-	const { memoId } = ctx.param;
+	const { memoId } = ctx.request.params;
 	const result = await memoService.updateBody(memoId, accountId, body);
 	ctx.status = 200;
 	ctx.body = { result };
@@ -41,7 +41,7 @@ router.put('/api/memo/:memoId', validateUser, convertParamQuery, async (ctx) => 
 
 router.delete('/api/memo/:memoId', validateUser, convertParamQuery, async (ctx) => {
 	const accountId = ctx.state.user;
-	const { memoId } = ctx.param;
+	const { memoId } = ctx.request.params;
 	await memoService.delete(memoId, accountId);
 	ctx.status = 204;
 });

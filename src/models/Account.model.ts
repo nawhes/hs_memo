@@ -16,7 +16,7 @@ export default class Account extends BaseModel<Account> {
 
 	@Is(VALID_ID)
 	@Column({ type: DataType.STRING(20), allowNull: false })
-	accountId: string;
+	userId: string;
 
 	@Is(VALID_SALTEDPW)
 	@Column({ type: DataType.STRING(256), allowNull: false })

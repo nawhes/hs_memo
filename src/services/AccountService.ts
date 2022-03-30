@@ -12,11 +12,11 @@ export default class AccountService {
 
 	public async signUp(id: string, pw: string): Promise<void> {
 		try {
-			const isExist = await Account.findOne({ where: { accountId: id } });
+			const isExist = await Account.findOne({ where: { userId: id } });
 			if (isExist) throw new ValidationError(`${id} is exist already`);
 			const salt = crypto.randomBytes(AUTH.SALT_LENGTH_BYTE).toString('hex');
 			const saltedPw = this.hashing(pw, salt);
-			await Account.create({ accountId: id, saltedPw, salt });
+			await Account.create({ userId: id, saltedPw, salt });
 		} catch (error: unknown) {
 			if (typeof error == 'string' || !(error instanceof Error)) throw error;
 			if (error.name === 'SequelizeValidationError') throw new ValidationError(error.message);
@@ -25,7 +25,7 @@ export default class AccountService {
 	}
 
 	public async signIn(id: string, pw: string): Promise<Account> {
-		const account = await Account.findOne({ where: { accountId: id } });
+		const account = await Account.findOne({ where: { userId: id } });
 		if (account === null) throw new ValidationError(`${id} is not exist`);
 		const saltedPw = this.hashing(pw, account.salt);
 		if (saltedPw !== account.saltedPw) throw new ValidationError('Not valid password');

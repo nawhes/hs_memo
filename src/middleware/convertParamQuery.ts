@@ -23,6 +23,6 @@ const convert = (value) => {
 
 export default function convertParamQuery(ctx, next): Promise<void> {
 	convert(ctx.request.query);
-	convert(ctx.request.param);
+	convert(ctx.request.params);
 	return next();
 }

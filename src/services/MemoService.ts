@@ -1,14 +1,13 @@
+/* eslint-disable class-methods-use-this */
 import DataAccessError from 'errors/DataAccessError';
-import Comment from 'models/Comment.model';
-import Memo from 'models/Memo.model';
 import { Service } from 'typedi';
+import { Memo, Comment } from 'models';
 
 @Service()
 export default class MemoService {
-	private readonly limit = 30;
-	constructor() {}
+	private readonly limit = 5;
 
-	public async getList(page: number = 1): Promise<Memo[]> {
+	public async getList(page = 1): Promise<Memo[]> {
 		const offset = (page - 1) * this.limit;
 		return Memo.findAll({ offset, limit: this.limit });
 	}
@@ -20,7 +19,7 @@ export default class MemoService {
 			if (!result) throw new DataAccessError('Memo does not saved');
 			return result;
 		} catch (error) {
-			if (typeof error == 'string' || !(error instanceof Error)) throw error;
+			if (typeof error === 'string' || !(error instanceof Error)) throw error;
 			if (error.name === 'SequelizeForeignKeyConstraintError') throw new DataAccessError(`${accountId} has some problem`);
 			throw error;
 		}

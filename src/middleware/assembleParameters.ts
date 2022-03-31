@@ -21,8 +21,10 @@ const convert = (value) => {
 	return value;
 };
 
-export default function convertParamQuery(ctx, next): Promise<void> {
-	convert(ctx.request.query);
-	convert(ctx.request.params);
+export default function assembleParameters(ctx, next): Promise<void> {
+	ctx.state.parameters = {};
+	Object.assign(ctx.state.parameters, convert(ctx.request.query));
+	Object.assign(ctx.state.parameters, convert(ctx.request.params));
+	Object.assign(ctx.state.parameters, ctx.request.body);
 	return next();
 }

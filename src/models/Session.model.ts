@@ -1,4 +1,4 @@
-import { Table, Column, PrimaryKey, DataType, AutoIncrement } from 'sequelize-typescript';
+import { Table, Column, PrimaryKey, DataType } from 'sequelize-typescript';
 import BaseModel from './BaseModel';
 
 @Table({ tableName: 'session', underscored: true, timestamps: false })
@@ -8,7 +8,7 @@ export default class Session extends BaseModel<Session> {
 	id: string;
 
 	@Column({ type: DataType.JSON, allowNull: false })
-	session: Object;
+	session: Record<string, unknown>;
 
 	@Column({ type: DataType.NUMBER, allowNull: false })
 	maxAge: number;

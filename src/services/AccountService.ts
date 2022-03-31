@@ -1,4 +1,5 @@
-import Account from 'models/Account.model';
+/* eslint-disable class-methods-use-this */
+import { Account } from 'models';
 import { Service } from 'typedi';
 import { AUTH } from 'config';
 import crypto from 'crypto';
@@ -18,7 +19,7 @@ export default class AccountService {
 			const saltedPw = this.hashing(pw, salt);
 			await Account.create({ userId: id, saltedPw, salt });
 		} catch (error: unknown) {
-			if (typeof error == 'string' || !(error instanceof Error)) throw error;
+			if (typeof error === 'string' || !(error instanceof Error)) throw error;
 			if (error.name === 'SequelizeValidationError') throw new ValidationError(error.message);
 			throw error;
 		}

@@ -1,14 +1,16 @@
 import Router from '@koa/router';
-import logger from 'loaders/logger';
 import AccountService from 'services/AccountService';
 import Container from 'typedi';
 import koaPassport from 'koa-passport';
+import assembleParameters from 'middleware/assembleParameters';
+import validateParameters from 'middleware/validateParameters';
+import { Context } from 'koa';
 
 const router = new Router();
 const accountService = Container.get(AccountService);
 
-router.post('/api/user/signup', async (ctx) => {
-	const { id, pw } = ctx.request.body;
+router.post('/api/user/signup', assembleParameters, validateParameters('/api/user/signup'), async (ctx: Context) => {
+	const { id, pw } = ctx.state.parameters;
 	await accountService.signUp(id, pw);
 	ctx.status = 201;
 });

@@ -1,9 +1,9 @@
 import { AUTH } from 'config';
+import { Memo } from 'models';
 import { Table, Column, PrimaryKey, HasMany, Is, DataType, AutoIncrement } from 'sequelize-typescript';
 import BaseModel from './BaseModel';
-import Memo from './Memo.model';
 
-const VALID_ID = /^[a-z]{1}[a-z0-9_-]{4,20}$/;
+const VALID_ID = /^[a-z]{1}[a-z0-9_-]{3,20}$/;
 const VALID_SALTEDPW = /[a-f0-9]{64}/;
 const VALID_SALT = new RegExp(`[a-f0-9]{${AUTH.SALT_LENGTH_BYTE * 2}}`);
 

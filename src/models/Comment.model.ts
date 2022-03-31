@@ -1,7 +1,6 @@
+import { Account, Memo } from 'models';
 import { Table, Column, PrimaryKey, ForeignKey, DataType, AutoIncrement } from 'sequelize-typescript';
-import Account from './Account.model';
 import BaseModel from './BaseModel';
-import Memo from './Memo.model';
 
 @Table({ tableName: 'comment', underscored: true })
 export default class Comment extends BaseModel<Comment> {

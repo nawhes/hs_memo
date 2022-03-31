@@ -1,7 +1,8 @@
-import { BaseError } from 'errors/BaseError';
+import BaseError from 'errors/BaseError';
+import { Context, Next } from 'koa';
 import logger from './logger';
 
-export default async function koaErrorHandler(ctx, next) {
+export default async function koaErrorHandler(ctx: Context, next: Next) {
 	try {
 		await next();
 	} catch (error) {
@@ -15,7 +16,7 @@ export default async function koaErrorHandler(ctx, next) {
 			ctx.body = {
 				message: 'Internal Server Error',
 			};
-			if (typeof error == 'string') logger.warn(error.toString());
+			if (typeof error === 'string') logger.warn(error.toString());
 			else if (error instanceof Error) logger.warn(error.message);
 		}
 	}

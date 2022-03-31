@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { PORT } from './config/index';
 import logger from 'loaders/logger';
+import { PORT } from './config/index';
 import 'loaders/sequelize';
 import app from './loaders/koa';
 

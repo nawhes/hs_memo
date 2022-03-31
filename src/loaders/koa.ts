@@ -1,16 +1,16 @@
 import Koa from 'koa';
-import koaLogger from './koaLogger';
 import bodyParser from 'koa-bodyparser';
-import koaErrorHandler from './koaErrorHandler';
-import PostgresSessionStore from './PostgresSessionStore';
-
 import session from 'koa-session';
 import koaPassport from 'koa-passport';
+import { PRIVATE } from 'config';
+import koaLogger from './koaLogger';
+import koaErrorHandler from './koaErrorHandler';
+// import PostgresSessionStore from './PostgresSessionStore';
+
 import passport from './passport';
 
 import memoRouter from '../routes/api/memo';
 import userRouter from '../routes/api/user';
-import { PRIVATE } from 'config';
 
 const koa = new Koa({ proxy: true, keys: [PRIVATE] });
 

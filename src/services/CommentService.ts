@@ -1,5 +1,6 @@
+/* eslint-disable class-methods-use-this */
 import DataAccessError from 'errors/DataAccessError';
-import Comment from 'models/Comment.model';
+import { Comment } from 'models';
 import { Service } from 'typedi';
 
 @Service()
@@ -10,9 +11,8 @@ export default class CommentService {
 			if (!result) throw new DataAccessError('Comment does not saved');
 			return result;
 		} catch (error) {
-			if (typeof error == 'string' || !(error instanceof Error)) throw error;
+			if (typeof error === 'string' || !(error instanceof Error)) throw error;
 			if (error.name === 'SequelizeForeignKeyConstraintError') throw new DataAccessError(`Parameters has some problem`);
-			console.log(error.name);
 			throw error;
 		}
 	}

@@ -38,8 +38,8 @@ https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 ### 프로젝트를 시작하기 전
 프로젝트에 사용되는 환경변수는 .env와 .env.dev에 정의되있습니다.
 
-DB_PORT : Docker 컨테이너와 통신하기 위한 포트번호입니다.
-PORT : 애플리케이션이 수신할 포트번호입니다.
+-   DB_PORT : Docker 컨테이너와 통신하기 위한 포트번호입니다.
+-   PORT : 애플리케이션이 수신할 포트번호입니다.
 
 각자의 실행환경에 맞게 해당 환경변수를 확인해주세요.
 
@@ -100,6 +100,8 @@ GET /api/memo/:memoId
 
 #### 메모 등록
 
+-   signin 이후에 가능합니다.
+
 ##### URL
 
 ```
@@ -115,6 +117,9 @@ POST /api/memo
 
 #### 메모 수정
 
+-   signin 이후에 가능합니다.
+-   signin 된 계정에 의해 작성된 메모만 수정됩니다.
+
 ##### URL
 
 ```
@@ -126,9 +131,12 @@ PUT /api/memo/:memoId
 |            | Name         | Type   | Description       | Required |
 | ---------- | ------------ | ------ | ----------------- | -------- |
 | URL        | memoId       | number | 수정할 메모의 ID    | O        |
-| body(JSON) | body         | string | 메모의 내용         | X        |
+| body(JSON) | body         | string | 메모의 내용         | O        |
 
 #### 메모 삭제
+
+-   signin 이후에 가능합니다.
+-   signin 된 계정에 의해 작성된 메모만 삭제됩니다.
 
 ##### URL
 
@@ -154,8 +162,8 @@ POST /api/user/signup
 
 |            | Name         | Type   | Description       | Required |
 | ---------- | ------------ | ------ | ----------------- | -------- |
-| body(JSON) | id           | string | id제약조건 나열      | O        |
-|            | pw           | string | 평문 or hashed?    | O        |
+| body(JSON) | id           | string | 영문소문자로 시작하는 4~20자의 문자열 / 영소문자, 숫자, -(hyphen), _(underscore) 만 허용함. | O        |
+|            | pw           | string | 2~14자의 문자열 원본 / 대소문자를 구분하며 영문자와 숫자만 허용함. | O        |
 
 #### 로그인
 
@@ -169,8 +177,64 @@ POST /api/user/signin
 
 |            | Name         | Type   | Description       | Required |
 | ---------- | ------------ | ------ | ----------------- | -------- |
-| body(JSON) | id           | string | id제약조건 나열      | O        |
-|            | pw           | string | 평문 or hashed?    | O        |
+| body(JSON) | id           | string | 영문소문자로 시작하는 4~20자의 문자열 / 영소문자, 숫자, -(hyphen), _(underscore) 만 허용함. | O        |
+|            | pw           | string | 2~14자의 문자열 원본 / 대소문자를 구분하며 영문자와 숫자만 허용함. | O        |
+
+#### 댓글작성
+
+-   signin 이후에 가능합니다.
+
+##### URL
+
+```
+POST /api/memo/:memoId/comment
+```
+
+##### Parameter
+
+|            | Name         | Type   | Description       | Required |
+| ---------- | ------------ | ------ | ----------------- | -------- |
+| URL        | memoId       | number | 댓글을 작성할 메모의 id | O        |
+| body(JSON) | body         | string | 댓글의 내용         | O        |
+
+
+#### 댓글수정
+
+-   signin 이후에 가능합니다.
+-   signin 된 계정에 의해 작성된 댓글만 수정됩니다글
+
+##### URL
+
+```
+PUT /api/memo/:memoId/comment/:commentId
+```
+
+##### Parameter
+
+|            | Name         | Type   | Description       | Required |
+| ---------- | ------------ | ------ | ----------------- | -------- |
+| URL        | memoId       | number | 댓글이 작성된 메모의 id | O        |
+| URL        | commentId    | number | 수정할 댓글의 id | O        |
+| body(JSON) | body         | string | 댓글의 내용         | O        |
+
+
+#### 댓글삭제
+
+-   signin 이후에 가능합니다제
+-   signin 된 계정에 의해 작성된 메모만 삭제됩니다.
+
+##### URL
+
+```
+DELETE /api/memo/:memoId/comment/:commentId
+```
+
+##### Parameter
+
+|            | Name         | Type   | Description       | Required |
+| ---------- | ------------ | ------ | ----------------- | -------- |
+| URL        | memoId       | number | 댓글이 작성된 메모의 id | O        |
+| URL        | commentId    | number | 수정할 댓글의 id | O        |
 
 
 ## References

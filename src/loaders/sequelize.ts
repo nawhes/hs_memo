@@ -1,13 +1,12 @@
 import { Sequelize } from 'sequelize-typescript';
-import { DB } from '../config/index';
 import path from 'path';
+import { DB } from '../config/index';
 import logger from './logger';
-import Container from 'typedi';
 
 const modelsDirectory = path.resolve(process.cwd(), 'src', 'models');
 
 const sequelize = new Sequelize(`postgres://${DB.USER}:${DB.PW}@${DB.HOST}:${DB.PORT}/${DB.NAME}`, {
-	models: [modelsDirectory + '/**/*.model.ts'],
+	models: [`${modelsDirectory}/**/*.model.ts`],
 });
 
 sequelize

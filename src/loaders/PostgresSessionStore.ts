@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import Session from 'models/Session.model';
 
 export default class PostgresSessionStore {
@@ -14,6 +15,5 @@ export default class PostgresSessionStore {
 
 	public async destroy(key) {
 		await Session.destroy({ where: { id: key } });
-		return;
 	}
 }

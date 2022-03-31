@@ -57,6 +57,15 @@ Docker 컨테이너를 가동시키는 동작을 합니다.
 npm run dev
 ```
 
+프로젝트가 실행 된 후 테스트 조회를 위해 임의의 메모 더미를 삽입하고 싶으면 아래의 url에 요청을 보내주세요.
+```
+GET /test
+``` 
+-   임의의 아이디로부터 생성된 메모가 추가됩니다.
+-   별도의 응답은 없습니다.
+-   쿼리스트링으로 accountCount와 memoCount를 전달할 경우 해당하는 숫자만큼 계정과 메모가 생성됩니다.
+-   accountCount와 memoCount가 전달되지 않을 경우 기본값은 5입니다
+
 
 ## Development Environment
 

@@ -11,13 +11,14 @@ export default class AccountService {
 		return crypto.pbkdf2Sync(pw, salt, 10000, 32, 'sha256').toString('hex');
 	}
 
-	public async signUp(id: string, pw: string): Promise<void> {
+	public async signUp(id: string, pw: string): Promise<number> {
 		try {
 			const isExist = await Account.findOne({ where: { userId: id } });
 			if (isExist) throw new ValidationError(`${id} is exist already`);
 			const salt = crypto.randomBytes(AUTH.SALT_LENGTH_BYTE).toString('hex');
 			const saltedPw = this.hashing(pw, salt);
-			await Account.create({ userId: id, saltedPw, salt });
+			const result = await Account.create({ userId: id, saltedPw, salt });
+			return result.id;
 		} catch (error: unknown) {
 			if (typeof error === 'string' || !(error instanceof Error)) throw error;
 			if (error.name === 'SequelizeValidationError') throw new ValidationError(error.message);

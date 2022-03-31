@@ -11,6 +11,7 @@ import passport from './passport';
 
 import memoRouter from '../routes/api/memo';
 import userRouter from '../routes/api/user';
+import testRouter from '../routes/api/test';
 
 const koa = new Koa({ proxy: true, keys: [PRIVATE] });
 
@@ -29,5 +30,6 @@ koa.use(koaLogger);
 
 koa.use(memoRouter.routes());
 koa.use(userRouter.routes());
+koa.use(testRouter.routes());
 
 export default koa;

@@ -32,6 +32,8 @@ CREATE TABLE IF NOT EXISTS memo (
     updated_at      TIMESTAMP
 );
 
+CREATE INDEX memo_updated_at ON memo (id, updated_at DESC);
+
 CREATE TABLE IF NOT EXISTS comment (
     id              SERIAL PRIMARY KEY,
     account_id      INTEGER NOT NULL CONSTRAINT FK_comment_account REFERENCES account(id) ON DELETE CASCADE ON UPDATE CASCADE,

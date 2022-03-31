@@ -1,22 +1,23 @@
-import { Table, Column, Model, PrimaryKey, ForeignKey, DataType } from 'sequelize-typescript';
-import Account from './Account.model';
-import Memo from './Memo.model';
+import { Account, Memo } from 'models';
+import { Table, Column, PrimaryKey, ForeignKey, DataType, AutoIncrement } from 'sequelize-typescript';
+import BaseModel from './BaseModel';
 
 @Table({ tableName: 'comment', underscored: true })
-export default class Comment extends Model {
+export default class Comment extends BaseModel<Comment> {
 	@PrimaryKey
+	@AutoIncrement
 	@Column
 	id: number;
 
 	@ForeignKey(() => Account)
-	@Column
-	userid: number;
+	@Column({ type: DataType.INTEGER, allowNull: false })
+	accountId: number;
 
 	@ForeignKey(() => Memo)
-	@Column
-	memoid: number;
+	@Column({ type: DataType.INTEGER, allowNull: false })
+	memoId: number;
 
-	@Column(DataType.TEXT)
+	@Column({ type: DataType.TEXT, allowNull: false })
 	body: string;
 
 	@Column(DataType.DATE)

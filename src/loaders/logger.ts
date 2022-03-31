@@ -1,4 +1,4 @@
-import winston, { level } from 'winston';
+import winston from 'winston';
 import { LOG } from 'config';
 import path from 'path';
 

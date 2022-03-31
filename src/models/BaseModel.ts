@@ -1,2 +1,3 @@
 import { Model } from 'sequelize-typescript';
-export default class BaseModel extends Model {}
+
+export default class BaseModel<T> extends Model {}

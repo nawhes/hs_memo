@@ -23,3 +23,9 @@ export const DB = {
 export const LOG = {
 	LEVEL: process.env.LOG_LEVEL || 'silly',
 };
+
+export const AUTH = {
+	SALT_LENGTH_BYTE: process.env.SALT_LENGTH_BYTE ? parseInt(process.env.SALT_LENGTH_BYTE, 10) : 16,
+};
+
+export const PRIVATE = process.env.PRIVATE || 'PRIVATE';

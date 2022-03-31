@@ -17,14 +17,15 @@ PGPASSWORD=memo psql -v ON_ERROR_STOP=1 --username "$HS_DBUSER" --dbname $HS_DBN
 
 CREATE TABLE IF NOT EXISTS account (
     id              SERIAL PRIMARY KEY,
-    userid          VARCHAR(20) UNIQUE NOT NULL,
-    salted_pw       CHAR(256) NOT NULL,
+    user_id         VARCHAR(20) UNIQUE NOT NULL,
+    salted_pw       CHAR(64) NOT NULL,
+    salt            CHAR(16) NOT NULL,
     created_at      TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS memo (
     id              SERIAL PRIMARY KEY,
-    userid          INTEGER CONSTRAINT FK_memo_account REFERENCES account(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    account_id      INTEGER NOT NULL CONSTRAINT FK_memo_account REFERENCES account(id) ON DELETE CASCADE ON UPDATE CASCADE,
     head            VARCHAR(20) NOT NULL,
     body            TEXT NOT NULL,
     created_at      TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -33,11 +34,18 @@ CREATE TABLE IF NOT EXISTS memo (
 
 CREATE TABLE IF NOT EXISTS comment (
     id              SERIAL PRIMARY KEY,
-    userid          INTEGER CONSTRAINT FK_comment_account REFERENCES account(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    memoid          INTEGER CONSTRAINT FK_comment_memo REFERENCES memo(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    account_id      INTEGER NOT NULL CONSTRAINT FK_comment_account REFERENCES account(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    memo_id         INTEGER NOT NULL CONSTRAINT FK_comment_memo REFERENCES memo(id) ON DELETE CASCADE ON UPDATE CASCADE,
     body            TEXT NOT NULL,
     created_at      TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at      TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS session (
+    id              VARCHAR PRIMARY KEY,
+    max_age         BIGINT,
+    user_id         INTEGER,
+    session         JSONB
 );
 
 CREATE OR REPLACE FUNCTION FNC_update_time() 

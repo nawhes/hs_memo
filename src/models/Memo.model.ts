@@ -1,20 +1,22 @@
-import { Table, Column, Model, PrimaryKey, ForeignKey, DataType } from 'sequelize-typescript';
-import Account from './Account.model';
+import { Account, Comment } from 'models';
+import { Table, Column, PrimaryKey, ForeignKey, DataType, AutoIncrement, HasMany } from 'sequelize-typescript';
+import BaseModel from './BaseModel';
 
 @Table({ tableName: 'memo', underscored: true })
-export default class Memo extends Model {
+export default class Memo extends BaseModel<Memo> {
 	@PrimaryKey
+	@AutoIncrement
 	@Column
 	id: number;
 
 	@ForeignKey(() => Account)
-	@Column
-	userid: number;
+	@Column({ type: DataType.INTEGER, allowNull: false })
+	accountId: number;
 
-	@Column(DataType.STRING(20))
+	@Column({ type: DataType.STRING(20), allowNull: false })
 	head: string;
 
-	@Column(DataType.TEXT)
+	@Column({ type: DataType.TEXT, allowNull: false })
 	body: string;
 
 	@Column(DataType.DATE)
@@ -22,4 +24,7 @@ export default class Memo extends Model {
 
 	@Column(DataType.DATE)
 	updatedAt?: any;
+
+	@HasMany(() => Comment, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
+	comments: Comment[];
 }

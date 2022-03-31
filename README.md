@@ -71,7 +71,7 @@ npm run dev
 
 #### 메모 조회
 
--   최근에 작성된 메모부터 5개 단위로 조회합니다.
+-   최근에 수정된 메모부터 5개 단위로 조회합니다.
 
 ##### URL
 
@@ -162,8 +162,8 @@ POST /api/user/signup
 
 |            | Name         | Type   | Description       | Required |
 | ---------- | ------------ | ------ | ----------------- | -------- |
-| body(JSON) | id           | string | 영문소문자로 시작하는 4~20자의 문자열 / 영소문자, 숫자, -(hyphen), _(underscore) 만 허용함. | O        |
-|            | pw           | string | 2~14자의 문자열 원본 / 대소문자를 구분하며 영문자와 숫자만 허용함. | O        |
+| body(JSON) | id           | string | 영문소문자로 시작하는 4~20자의 문자열 / 영소문자, 숫자, -(hyphen), _(underscore) 만 허용함 | O        |
+|            | pw           | string | 2~14자의 문자열 원본 / 대소문자를 구분하며 영문자와 숫자만 허용함 | O        |
 
 #### 로그인
 
@@ -177,8 +177,8 @@ POST /api/user/signin
 
 |            | Name         | Type   | Description       | Required |
 | ---------- | ------------ | ------ | ----------------- | -------- |
-| body(JSON) | id           | string | 영문소문자로 시작하는 4~20자의 문자열 / 영소문자, 숫자, -(hyphen), _(underscore) 만 허용함. | O        |
-|            | pw           | string | 2~14자의 문자열 원본 / 대소문자를 구분하며 영문자와 숫자만 허용함. | O        |
+| body(JSON) | id           | string | 영문소문자로 시작하는 4~20자의 문자열 / 영소문자, 숫자, -(hyphen), _(underscore) 만 허용함 | O        |
+|            | pw           | string | 2~14자의 문자열 원본 / 대소문자를 구분하며 영문자와 숫자만 허용함 | O        |
 
 #### 댓글작성
 
@@ -201,7 +201,7 @@ POST /api/memo/:memoId/comment
 #### 댓글수정
 
 -   signin 이후에 가능합니다.
--   signin 된 계정에 의해 작성된 댓글만 수정됩니다글
+-   signin 된 계정에 의해 작성된 댓글만 수정됩니다.
 
 ##### URL
 

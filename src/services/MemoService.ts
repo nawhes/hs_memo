@@ -9,7 +9,7 @@ export default class MemoService {
 
 	public async getList(page = 1): Promise<Memo[]> {
 		const offset = (page - 1) * this.limit;
-		return Memo.findAll({ offset, limit: this.limit });
+		return Memo.findAll({ offset, order: [['updatedAt', 'DESC']], limit: this.limit });
 	}
 
 	public async insert(accountId: number, body: string): Promise<Memo> {
